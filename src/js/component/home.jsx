@@ -1,26 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import Contador from "./second.jsx";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
-
-//create your first component
 const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+  let timer;
+
+  const [miliSeconds, setMiliSeconds] = useState(0);
+  const [second, setSecond] = useState(0);
+  const [minute, setMinute] = useState(0);
+
+  useEffect(() => {
+    timer = setInterval(() => {
+      setMiliSeconds(prevCount => prevCount + 10);
+      if (miliSeconds >= 990) {
+        setSecond(prevCount => prevCount + 1);
+        setMiliSeconds(0);
+      }
+      if (second >= 60) {
+        setMinute(prevCount => prevCount + 1);
+        setSecond(0);
+      }
+    }, 10);
+    return () => clearInterval(timer);
+  }, [miliSeconds]);
+
+  return (
+    <div>
+      <Contador miliSeconds={miliSeconds} second={second} minute={minute} />
+    </div>
+  );
 };
 
 export default Home;
+
